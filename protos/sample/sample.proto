@@ -1,0 +1,17 @@
+syntax = "proto3";
+package sample;
+option go_package = "github.com/choi-yh/example-golang";
+
+import "google/api/annotations.proto";
+
+service SampleService {
+  rpc Echo(StringMessage) returns (StringMessage) {
+    option (google.api.http) = {
+      get: "/api/v1/example/echo"
+    };
+  };
+}
+
+message StringMessage {
+  string value = 1;
+}
