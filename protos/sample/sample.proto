@@ -3,15 +3,70 @@ package sample;
 option go_package = "github.com/choi-yh/example-golang";
 
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  swagger: "2.0";
+  info: {
+    title: "Sample API";
+    version: "1.0";
+    description: "";
+    contact: {
+      name: "Golang Example";
+      url: "https://github.com/choi-yh/example-golang";
+      email: "yhchoi0102@gmail.com";
+    };
+  };
+  host: "localhost:8080";
+  schemes: [HTTP, HTTPS];
+  consumes: "application/json";
+  produces: "application/json";
+};
 
 service SampleService {
   rpc Echo(StringMessage) returns (StringMessage) {
     option (google.api.http) = {
-      get: "/api/v1/example/echo"
+      post: "/api/v1/example/echo"
+      body: "*"
     };
-  };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Echo";
+      operation_id: "Echo";
+      tags: "Sample";
+      responses: {
+        key: "200"
+          value: {
+          description: "OK";
+        }
+      }
+    };
+  }
+
+  rpc SayHello (HelloRequest) returns (HelloResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/greeter"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Say Hello";
+      operation_id: "SayHello";
+      tags: "echo";
+      responses: {
+        key: "200"
+        value: {
+          description: "OK";
+        }
+      }
+    };
+  }
 }
 
 message StringMessage {
   string value = 1;
+}
+
+message HelloRequest {
+  string name = 1;
+}
+message HelloResponse {
+  string message = 1;
 }
