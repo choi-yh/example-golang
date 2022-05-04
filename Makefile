@@ -1,3 +1,4 @@
+.PHONY: build-sample-proto
 build-sample-proto:
 	protoc \
 		-I . \
