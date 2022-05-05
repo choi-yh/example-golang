@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/choi-yh/example-golang/sample/app"
-	"github.com/choi-yh/example-golang/sample/app/server"
+	"github.com/choi-yh/example-golang/internal/sample/app"
+	"github.com/choi-yh/example-golang/internal/sample/app/server"
 )
 
 func main() {
