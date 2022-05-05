@@ -13,4 +13,4 @@ build-sample-proto:
 		--grpc-gateway_opt paths=source_relative \
 		--openapiv2_out . \
 		--openapiv2_opt logtostderr=true \
-		protos/sample/sample.proto
+		internal/sample/protos/sample/sample.proto

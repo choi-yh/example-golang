@@ -3,18 +3,18 @@ package server
 import (
 	"context"
 	"fmt"
-	samplepb "github.com/choi-yh/example-golang/protos/sample"
+	"github.com/choi-yh/example-golang/internal/sample/protos/sample"
 )
 
 type SampleServer struct {
-	samplepb.SampleServiceServer
+	example_golang.SampleServiceServer
 }
 
-func (s *SampleServer) Echo(ctx context.Context, request *samplepb.StringMessage) (*samplepb.StringMessage, error) {
-	return &samplepb.StringMessage{Value: request.Value}, nil
+func (s *SampleServer) Echo(ctx context.Context, request *example_golang.StringMessage) (*example_golang.StringMessage, error) {
+	return &example_golang.StringMessage{Value: request.Value}, nil
 }
 
-func (s *SampleServer) SayHello(ctx context.Context, request *samplepb.HelloRequest) (*samplepb.HelloResponse, error) {
+func (s *SampleServer) SayHello(ctx context.Context, request *example_golang.HelloRequest) (*example_golang.HelloResponse, error) {
 	helloMessage := fmt.Sprintf("Hello %s", request.Name)
-	return &samplepb.HelloResponse{Message: helloMessage}, nil
+	return &example_golang.HelloResponse{Message: helloMessage}, nil
 }

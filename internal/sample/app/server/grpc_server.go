@@ -1,7 +1,7 @@
 package server
 
 import (
-	samplepb "github.com/choi-yh/example-golang/protos/sample"
+	samplepb "github.com/choi-yh/example-golang/internal/sample/protos/sample"
 	"google.golang.org/grpc"
 	"log"
 	"net"
