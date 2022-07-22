@@ -31,7 +31,7 @@ func (s *APIServer) Run() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost"+util.GrpcServerPort, options); err != nil {
+	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost:"+util.GrpcServerPort, options); err != nil {
 		log.Fatalf("Failed Register Grpc Gateway on Grpc Server : %v", err)
 	}
 
