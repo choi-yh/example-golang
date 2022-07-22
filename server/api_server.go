@@ -37,13 +37,13 @@ func (s *APIServer) Run() {
 
 	router := s.router
 
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World!")
-	})
-
 	if err := router.SetTrustedProxies([]string{"127.0.0.1"}); err != nil {
 		log.Fatalf("Failed to Set Trusted Proxies")
 	}
+
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Hello World!")
+	})
 
 	v1 := router.Group("/api/v1")
 	{
