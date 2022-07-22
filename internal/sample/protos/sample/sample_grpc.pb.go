@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.19.4
-// source: internal/sample/protos/sample/sample.proto
+// source: sample.proto
 
 package example_golang
 
@@ -137,5 +137,5 @@ var SampleService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "internal/sample/protos/sample/sample.proto",
+	Metadata: "sample.proto",
 }

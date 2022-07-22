@@ -1,10 +1,12 @@
 package server
 
 import (
-	"github.com/choi-yh/example-golang/internal/util"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	"github.com/choi-yh/example-golang/internal/util"
+	userpb "github.com/choi-yh/example-golang/protos/user"
+	"google.golang.org/grpc"
 )
 
 type GrpcServer struct {
@@ -18,6 +20,7 @@ func NewGrpcServer() *GrpcServer {
 }
 
 func (s *GrpcServer) Run() {
+	userpb.RegisterUserServiceServer(s.server, userpb.UnimplementedUserServiceServer{})
 
 	lis, err := net.Listen("tcp", "localhost:"+util.GrpcServerPort)
 	if err != nil {

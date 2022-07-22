@@ -1,10 +1,16 @@
 package server
 
 import (
-	"github.com/choi-yh/example-golang/internal/util"
-	"github.com/gin-gonic/gin"
+	"context"
 	"log"
 	"net/http"
+
+	"github.com/choi-yh/example-golang/internal/util"
+	userpb "github.com/choi-yh/example-golang/protos/user"
+	"github.com/gin-gonic/gin"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type APIServer struct {
@@ -18,6 +24,17 @@ func NewAPIServer() *APIServer {
 }
 
 func (s *APIServer) Run() {
+	ctx := context.Background()
+	mux := runtime.NewServeMux()
+
+	options := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+
+	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost"+util.GrpcServerPort, options); err != nil {
+		log.Fatalf("Failed Register Grpc Gateway on Grpc Server : %v", err)
+	}
+
 	router := s.router
 
 	router.GET("/", func(c *gin.Context) {
@@ -28,10 +45,10 @@ func (s *APIServer) Run() {
 		log.Fatalf("Failed to Set Trusted Proxies")
 	}
 
-	//v1 := router.Group("/api/v1")
-	//{
-	//	v1.Any("/*Any")
-	//}
+	v1 := router.Group("/api/v1")
+	{
+		v1.Any("/*Any", gin.WrapH(mux))
+	}
 
 	log.Printf("======= Start API Server on %s port =======", util.APIServerPort)
 	if err := router.Run(":" + util.APIServerPort); err != nil {
