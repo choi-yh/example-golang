@@ -4,8 +4,9 @@ import (
 	"log"
 	"net"
 
+	"github.com/choi-yh/example-golang/internal/util/constants"
+
 	"github.com/choi-yh/example-golang/app"
-	"github.com/choi-yh/example-golang/internal/util"
 	"google.golang.org/grpc"
 )
 
@@ -22,12 +23,12 @@ func NewGrpcServer() *GrpcServer {
 func (s *GrpcServer) Run() {
 	app.Register(s.server)
 
-	lis, err := net.Listen("tcp", "localhost:"+util.GrpcServerPort)
+	lis, err := net.Listen("tcp", "localhost:"+constants.GrpcServerPort)
 	if err != nil {
-		log.Fatalf("Failed to listen on %s port : %s", util.GrpcServerPort, err)
+		log.Fatalf("Failed to listen on %s port : %s", constants.GrpcServerPort, err)
 	}
 
-	log.Printf("======= Start Grpc Server on %s Port =======", util.GrpcServerPort)
+	log.Printf("======= Start Grpc Server on %s Port =======", constants.GrpcServerPort)
 	if err = s.server.Serve(lis); err != nil {
 		log.Fatalf("Failed to Serve Grpc Server : %s", err)
 	}

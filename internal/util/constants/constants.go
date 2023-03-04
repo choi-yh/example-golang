@@ -1,4 +1,4 @@
-package util
+package constants
 
 const (
 	APIServerPort  = "8080"

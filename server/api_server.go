@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/choi-yh/example-golang/internal/util"
+	"github.com/choi-yh/example-golang/internal/util/constants"
+
 	userpb "github.com/choi-yh/example-golang/protos/user"
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -31,7 +32,7 @@ func (s *APIServer) Run() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost:"+util.GrpcServerPort, options); err != nil {
+	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost:"+constants.GrpcServerPort, options); err != nil {
 		log.Fatalf("Failed Register Grpc Gateway on Grpc Server : %v", err)
 	}
 
@@ -50,8 +51,8 @@ func (s *APIServer) Run() {
 		v1.Any("/*Any", gin.WrapH(mux))
 	}
 
-	log.Printf("======= Start API Server on %s port =======", util.APIServerPort)
-	if err := router.Run(":" + util.APIServerPort); err != nil {
+	log.Printf("======= Start API Server on %s port =======", constants.APIServerPort)
+	if err := router.Run(":" + constants.APIServerPort); err != nil {
 		panic(err)
 	}
 }
