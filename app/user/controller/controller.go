@@ -3,11 +3,20 @@ package controller
 import (
 	"context"
 
+	"github.com/choi-yh/example-golang/app/user/service"
 	userpb "github.com/choi-yh/example-golang/protos/user"
+	"google.golang.org/grpc"
 )
 
 type Server struct {
 	userpb.UnimplementedUserServiceServer
+	svc service.Service
+}
+
+func RegisterServer(srv *grpc.Server) {
+	userpb.RegisterUserServiceServer(srv, &Server{
+		svc: service.NewService(),
+	})
 }
 
 func (s *Server) SignUp(ctx context.Context, request *userpb.SignUpRequest) (*userpb.SignUpResponse, error) {

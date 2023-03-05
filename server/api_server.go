@@ -46,7 +46,7 @@ func (s *APIServer) Run() {
 		c.String(http.StatusOK, "Hello World!")
 	})
 
-	v1 := router.Group("/api/v1")
+	v1 := router.Group("/v1")
 	{
 		v1.Any("/*Any", gin.WrapH(mux))
 	}

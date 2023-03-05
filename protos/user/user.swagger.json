@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/user/login": {
+    "/v1/user/login": {
       "post": {
         "operationId": "UserService_Login",
         "responses": {
@@ -48,7 +48,7 @@
         ]
       }
     },
-    "/api/v1/user/signup": {
+    "/v1/user/signup": {
       "post": {
         "operationId": "UserService_SignUp",
         "responses": {
@@ -116,10 +116,55 @@
       "type": "object"
     },
     "userSignUpRequest": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
     },
     "userSignUpResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/userUser"
+        }
+      }
+    },
+    "userUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "model"
     }
   }
 }
