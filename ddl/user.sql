@@ -5,7 +5,8 @@ CREATE TABLE `user`
     name       VARCHAR(32),
     phone      VARCHAR(32),
     created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY `email` (`email`)
 ) ENGINE = innoDB
 ;
 

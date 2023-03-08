@@ -11,6 +11,10 @@ type User struct {
 	UpdatedAt *time.Time `gorm:"updated_at"`
 }
 
+func (u User) TableName() string {
+	return "user"
+}
+
 type UserPassword struct {
 	ID       int    `gorm:"id"`
 	UserID   int    `gorm:"user_id"`

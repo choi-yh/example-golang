@@ -34,7 +34,7 @@ func (r repository) CreateUser(ctx context.Context, param model.CreateUserDBPara
 		CreatedAt: param.CreatedAt,
 	}
 
-	if err := r.db.Create(data).Error; err != nil {
+	if err := r.db.Create(&data).Error; err != nil {
 		return err
 	}
 
