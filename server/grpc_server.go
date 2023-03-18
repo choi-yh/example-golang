@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -23,7 +24,8 @@ func NewGrpcServer() *GrpcServer {
 func (s *GrpcServer) Run() {
 	app.Register(s.server)
 
-	lis, err := net.Listen("tcp", "localhost:"+constants.GrpcServerPort)
+	address := fmt.Sprintf("%s:%s", constants.HOST, constants.GrpcServerPort)
+	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("Failed to listen on %s port : %s", constants.GrpcServerPort, err)
 	}

@@ -2,10 +2,12 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/choi-yh/example-golang/internal/util/constants"
+	oauthpb "github.com/choi-yh/example-golang/protos/oauth"
 
 	userpb "github.com/choi-yh/example-golang/protos/user"
 	"github.com/gin-gonic/gin"
@@ -25,34 +27,37 @@ func NewAPIServer() *APIServer {
 }
 
 func (s *APIServer) Run() {
-	ctx := context.Background()
-	mux := runtime.NewServeMux()
+	bctx := context.Background()
+	ctx, cancel := context.WithCancel(bctx)
+	defer cancel()
 
-	options := []grpc.DialOption{
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "localhost:"+constants.GrpcServerPort, options); err != nil {
-		log.Fatalf("Failed Register Grpc Gateway on Grpc Server : %v", err)
-	}
-
-	router := s.router
-
-	if err := router.SetTrustedProxies([]string{"127.0.0.1"}); err != nil {
-		log.Fatalf("Failed to Set Trusted Proxies")
-	}
-
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World!")
-	})
-
-	v1 := router.Group("/v1")
-	{
-		v1.Any("/*Any", gin.WrapH(mux))
+	if err := registerEndpoint(ctx, mux, opts); err != nil {
+		log.Fatalf("Failed Register Endpoint : %v", err)
 	}
 
 	log.Printf("======= Start API Server on %s port =======", constants.APIServerPort)
-	if err := router.Run(":" + constants.APIServerPort); err != nil {
-		panic(err)
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", constants.APIServerPort), mux); err != nil {
+		log.Fatalf("Failed Register API Gateway on API Server : %v", err)
 	}
+}
+
+func registerEndpoint(ctx context.Context, mux *runtime.ServeMux, opts []grpc.DialOption) error {
+	endpoint := fmt.Sprintf("%s:%s", constants.HOST, constants.GrpcServerPort)
+
+	if err := userpb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+		//log.Fatalf("Failed Register Grpc Gateway on Grpc User Server : %v", err)
+		return err
+	}
+
+	if err := oauthpb.RegisterOAuthServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+		//log.Fatalf("Failed Register Grpc Gateway on Grpc OAuth Server : %v", err)
+		return err
+	}
+
+	return nil
 }
