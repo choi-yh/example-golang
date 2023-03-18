@@ -1,0 +1,28 @@
+syntax = "proto3";
+package user;
+option go_package = "github.com/choi-yh/example-golang/protos/oauth";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service OAuthService {
+  rpc GoogleLogin (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/v1/google/login"
+    };
+  }
+  rpc GoogleCallback (GoogleCallbackRequest) returns (GoogleCallbackResponse) {
+    option (google.api.http) = {
+      get: "/v1/google/callback"
+    };
+  }
+}
+
+message GoogleCallbackRequest {
+  string state = 1;
+  string code = 2;
+}
+message GoogleCallbackResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
