@@ -1,1 +1,1 @@
-![img.png](figure_9_1.png)
+![img.png](figure 9.1.png)

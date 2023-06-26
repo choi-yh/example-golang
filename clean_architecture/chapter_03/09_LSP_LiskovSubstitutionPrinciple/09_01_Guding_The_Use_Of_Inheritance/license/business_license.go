@@ -2,6 +2,8 @@ package license
 
 import "fmt"
 
+type BusinessLicense struct{}
+
 func (l BusinessLicense) CalcFee() {
 	fmt.Println("Calculate Business License Fee")
 	return
