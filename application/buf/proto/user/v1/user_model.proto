@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/choi-yh/example-golang/buf/proto/user.v1";
+
+message User {
+  int32 id = 1;
+  string email = 2;
+  string password = 3;
+  string name = 4;
+  string phone = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
