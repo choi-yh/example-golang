@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	ppgorm "github.com/pinpoint-apm/pinpoint-go-agent/plugin/gorm"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -21,7 +22,7 @@ func ConnectMySQL() *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, password, host, port, database)
 	config := &gorm.Config{}
 
-	db, err := gorm.Open(mysql.Open(dsn), config)
+	db, err := ppgorm.Open(mysql.Open(dsn), config)
 	if err != nil {
 		log.Panic(err)
 	}

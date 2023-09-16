@@ -6,6 +6,7 @@ import (
 	domainModel "github.com/choi-yh/example-golang/application/domain"
 	"github.com/choi-yh/example-golang/application/user/model"
 	utilMysql "github.com/choi-yh/example-golang/util/database/mysql"
+	"github.com/pinpoint-apm/pinpoint-go-agent"
 	"gorm.io/gorm"
 )
 
@@ -26,6 +27,8 @@ func NewRepository() Repository {
 }
 
 func (r repository) CreateUser(ctx context.Context, param model.CreateUserDBParam) error {
+	defer pinpoint.FromContext(ctx).NewSpanEvent("CreateUser").EndSpanEvent()
+
 	data := domainModel.User{
 		ID:        param.ID,
 		Email:     param.Email,
@@ -35,6 +38,7 @@ func (r repository) CreateUser(ctx context.Context, param model.CreateUserDBPara
 		CreatedAt: param.CreatedAt,
 	}
 
+	r.db = r.db.WithContext(ctx)
 	if err := r.db.Create(&data).Error; err != nil {
 		return err
 	}

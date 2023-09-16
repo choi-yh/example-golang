@@ -1,9 +1,11 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type CreateUserDBParam struct {
-	ID        int       `gorm:"id"`
+	ID        string    `gorm:"id"`
 	Email     string    `gorm:"email"`
 	Password  string    `gorm:"password"`
 	Name      string    `gorm:"name"`

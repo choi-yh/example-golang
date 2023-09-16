@@ -2,11 +2,14 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	domainModel "github.com/choi-yh/example-golang/application/domain"
 	model2 "github.com/choi-yh/example-golang/application/user/model"
 	"github.com/choi-yh/example-golang/application/user/repository/mysql"
 	"github.com/choi-yh/example-golang/util"
+	"github.com/google/uuid"
+	"github.com/pinpoint-apm/pinpoint-go-agent"
 )
 
 type service struct {
@@ -26,14 +29,19 @@ func NewService() Service {
 }
 
 func (s service) SignUp(ctx context.Context, param model2.SignUpParam) (res domainModel.User, err error) {
+	defer pinpoint.FromContext(ctx).NewSpanEvent("SignUp").EndSpanEvent()
+
 	hashPassword, err := util.EncodeHash(param.Password)
 	if err != nil {
 		return res, err
 	}
 
-	id := util.CreateID()
+	if param.Name == "error" {
+		return res, fmt.Errorf("name error")
+	}
+
 	user := model2.CreateUserDBParam{
-		ID:        id,
+		ID:        uuid.NewString(),
 		Email:     param.Email,
 		Password:  hashPassword,
 		Name:      param.Name,

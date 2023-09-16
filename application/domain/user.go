@@ -1,9 +1,11 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
-	ID        int        `json:"id" gorm:"id"`
+	ID        string     `json:"id" gorm:"id"`
 	Email     string     `json:"email" gorm:"email"`
 	Password  string     `json:"password" gorm:"password"`
 	Name      string     `json:"name" gorm:"name"`

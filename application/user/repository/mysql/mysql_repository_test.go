@@ -9,6 +9,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/choi-yh/example-golang/application/user/model"
 	"github.com/choi-yh/example-golang/util"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -53,11 +54,11 @@ func TestRepository_CreateUser(t *testing.T) {
 	ctx := context.Background()
 
 	param := model.CreateUserDBParam{
-		ID:        util.CreateID(),
+		ID:        uuid.NewString(),
 		Email:     "test@test.com",
 		Name:      "test_name",
 		Phone:     "",
-		CreatedAt: util.GetNowPtr(),
+		CreatedAt: util.GetNow(),
 	}
 
 	mock.ExpectBegin()

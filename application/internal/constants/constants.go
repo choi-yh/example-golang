@@ -1,6 +1,6 @@
 package constants
 
 const (
-	APIServerPort  = "8080"
-	GrpcServerPort = "9000"
+	APIServerPort  = "10010"
+	GrpcServerPort = "10020"
 )

@@ -6,6 +6,7 @@ import (
 	"github.com/choi-yh/example-golang/application/buf/gen/go/proto/user/v1"
 	"github.com/choi-yh/example-golang/application/user/model"
 	"github.com/choi-yh/example-golang/application/user/service"
+	"github.com/pinpoint-apm/pinpoint-go-agent"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -22,7 +23,12 @@ func RegisterServer(srv *grpc.Server) {
 }
 
 func (s *Server) SignUp(ctx context.Context, request *user_v1.SignUpRequest) (*user_v1.SignUpResponse, error) {
-	user, err := s.svc.SignUp(ctx, model.SignUpParam{
+	defer pinpoint.FromContext(ctx).NewSpanEvent("SignUp").EndSpanEvent()
+
+	tracer := pinpoint.FromContext(ctx)
+	pCtx := pinpoint.NewContext(context.Background(), tracer)
+
+	user, err := s.svc.SignUp(pCtx, model.SignUpParam{
 		Email:    request.Email,
 		Password: request.Password,
 		Name:     request.Name,
@@ -34,7 +40,7 @@ func (s *Server) SignUp(ctx context.Context, request *user_v1.SignUpRequest) (*u
 
 	return &user_v1.SignUpResponse{
 		User: &user_v1.User{
-			Id:        int32(user.ID),
+			Id:        user.ID,
 			Email:     user.Email,
 			Name:      user.Name,
 			Phone:     user.Phone,
